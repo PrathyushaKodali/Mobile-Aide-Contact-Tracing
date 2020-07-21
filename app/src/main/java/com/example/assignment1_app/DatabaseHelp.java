@@ -15,8 +15,8 @@ public class DatabaseHelp {
     private SQLiteDatabase database;
     private static final String TAG = "DatabaseHelp";
 
-    private static final String CREATE_USER_TABLE = "create table " + USER_INFO_TABLE + "(_id integer primary key autoincrement, username text not null, password text not null);";
-    private static final String CREATE_GPS_TABLE = "create table " + GPS_INFO_TABLE + "(_id integer primary key autoincrement, user_id integer not null, latitude real not null, longitude real not null);";
+    private static final String CREATE_USER_TABLE = "create table if not exists " + USER_INFO_TABLE + "(_id integer primary key autoincrement, username text not null, password text not null);";
+    private static final String CREATE_GPS_TABLE = "create table if not exists " + GPS_INFO_TABLE + "(timestamp integer primary key, latitude real not null, longitude real not null);";
 
     public DatabaseHelp() {
         try {
@@ -42,6 +42,18 @@ public class DatabaseHelp {
     public SQLiteDatabase writeDatabase() {
         database = SQLiteDatabase.openDatabase(DB_FILE_PATH + File.separator + DB_name, null, SQLiteDatabase.OPEN_READWRITE);
         return database;
+    }
+
+    public void addUser(String username, String password){
+        String userInfo = "('" + username +"','"+password +"');" ;
+        String ADD_USER = "INSERT INTO " + USER_INFO_TABLE + "(username,password) VALUES" + userInfo;
+        database.execSQL(ADD_USER);
+    }
+
+    public void addLatLng(float timestamp,float lat, float lng){
+        String latlngInfo ="("+ timestamp + "," + lat + "," + lng + ");" ;
+        String ADD_LATLNG = "INSERT INTO " + GPS_INFO_TABLE + " VALUES" + latlngInfo;
+        database.execSQL(ADD_LATLNG);
     }
 
     public void close() {
