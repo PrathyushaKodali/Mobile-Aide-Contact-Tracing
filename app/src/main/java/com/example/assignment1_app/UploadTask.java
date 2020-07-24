@@ -62,7 +62,7 @@ public class UploadTask extends AsyncTask<String,String,String> {
                 // Send db file.
                 writer.append("--" + boundary).append(CRLF);
                 writer.append("Content-Disposition: form-data; name=\"uploaded_file\"; filename=\"" + dbFile.getName() + "\"").append(CRLF);
-                writer.append("Content-Type: multipart/form-data; charset=" + charset).append(CRLF); // Text file itself must be saved in this charset!
+                writer.append("Content-Type: application/x-sqlite3; charset=" + charset).append(CRLF); // Text file itself must be saved in this charset!
                 writer.append(CRLF).flush();
                 FileInputStream vf = new FileInputStream(dbFile);
                 try {

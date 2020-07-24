@@ -7,18 +7,16 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import com.example.assignment1_app.ui.login.ChatActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.os.IBinder;
+import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
-import android.os.IBinder;
-import android.util.Log;
-import android.view.View;
+import com.example.assignment1_app.ui.login.ChatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -32,9 +30,9 @@ public class MidActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SQLiteDatabase.loadLibs(this);
-//        Intent intent;
-//        intent = new Intent(getApplicationContext(), MyLocationService.class);
-//        startService(intent);
+        Intent intent;
+        intent = new Intent(getApplicationContext(), MyLocationService.class);
+        startService(intent);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,8 +41,8 @@ public class MidActivity extends AppCompatActivity {
                 //Move to chat window from here
                 Log.d("Button clicked","Inside button click");
                 Intent intent;
-                intent = new Intent(getApplicationContext(), MyLocationService.class);
-                startService(intent);
+                intent = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(intent);
                 Log.d("Button clicked","After service started");
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
