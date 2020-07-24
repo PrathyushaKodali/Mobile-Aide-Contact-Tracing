@@ -1,23 +1,25 @@
 package com.example.assignment1_app;
 
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.content.Context;
-import android.util.Log;
-import android.os.IBinder;
-import androidx.core.app.ActivityCompat;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 
 public class MyLocationService extends Service {
     private LocationManager LocationManager = null;
     private static final String TAG = "GPS Location";
+    private final DatabaseHelp databaseHelp = new DatabaseHelp();
 
-    private class LocationListener implements android.location.LocationListener {
+    private class LocationListener  implements android.location.LocationListener {
         Location LastKnownLocation;
 
         public LocationListener(String provider) {
@@ -28,6 +30,18 @@ public class MyLocationService extends Service {
         public void onLocationChanged(Location location) {
             LastKnownLocation.set(location);
             Log.e(TAG, "location longitude " + location.getLongitude() + " location latitude" + location.getLatitude());
+//            databaseHelp.addLatLng(System.currentTimeMillis(),location.getLatitude(),location.getLongitude());
+//            databaseHelp.close();
+            sendMessageToActivity(location);
+        }
+
+        private void sendMessageToActivity(Location location){
+            Intent intent = new Intent("GPSLocationUpdates");
+            Bundle b = new Bundle();
+            b.putParcelable("location",location);
+            intent.putExtra("Location",b);
+            Log.e(TAG,"Gonna send the data !");
+            sendBroadcast(intent);
         }
 
         @Override

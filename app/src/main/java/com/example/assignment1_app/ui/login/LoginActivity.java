@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,12 +22,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.assignment1_app.MidActivity;
-import com.example.assignment1_app.MyLocationService;
 import com.example.assignment1_app.R;
+import com.example.assignment1_app.UploadChat;
+import com.example.assignment1_app.UploadTask;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private static final String TAG = "LoginActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,10 +118,12 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
-                Intent intent;
-                intent = new Intent(getApplicationContext(), MyLocationService.class);
-                startService(intent);
-
+                UploadChat uploadChat = new UploadChat();
+                Toast.makeText(getApplicationContext(),"Starting to Upload chat",Toast.LENGTH_LONG).show();
+                uploadChat.execute();
+                UploadTask uploadTask = new UploadTask();
+                Log.e(TAG,"uploading the db");
+                uploadTask.execute();
                 openChatActivity();
             }
         });
