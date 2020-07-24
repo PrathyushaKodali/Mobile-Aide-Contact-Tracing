@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.example.assignment1_app.ui.login.ChatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,16 +32,22 @@ public class MidActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SQLiteDatabase.loadLibs(this);
-        insertDataIntoDb();
-
+//        Intent intent;
+//        intent = new Intent(getApplicationContext(), MyLocationService.class);
+//        startService(intent);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Move to chat window from here
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Log.d("Button clicked","Inside button click");
+                Intent intent;
+                intent = new Intent(getApplicationContext(), MyLocationService.class);
+                startService(intent);
+                Log.d("Button clicked","After service started");
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -48,15 +55,7 @@ public class MidActivity extends AppCompatActivity {
 
     }
 
-    private void insertDataIntoDb(){
-        //TODO: get password from the previous activity
-//        SQLiteDatabase db = DatabaseHelp.getInstance(this).getWritableDatabase("password");
-        Intent intent;
-        intent = new Intent(getApplicationContext(),MyLocationService.class);
-        startService(intent);
 
-
-    }
 
 
 

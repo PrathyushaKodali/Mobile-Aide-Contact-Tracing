@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.assignment1_app.MidActivity;
 import com.example.assignment1_app.R;
 import com.example.assignment1_app.ui.login.LoginViewModel;
 import com.example.assignment1_app.ui.login.LoginViewModelFactory;
@@ -119,13 +120,15 @@ public class LoginActivity extends AppCompatActivity {
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
 
-                openChatActivity();
+                Intent intent;
+                intent = new Intent(getApplicationContext(), MidActivity.MyLocationService.class);
+                startService(intent);
             }
         });
     }
 
     public void openChatActivity(){
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, MidActivity.class);
         startActivity(intent);
     }
     private void updateUiWithUser(LoggedInUserView model) {
