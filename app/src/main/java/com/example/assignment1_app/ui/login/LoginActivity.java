@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.assignment1_app.MidActivity;
+import com.example.assignment1_app.MyLocationService;
 import com.example.assignment1_app.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -114,6 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+                Intent intent;
+                intent = new Intent(getApplicationContext(), MyLocationService.class);
+                startService(intent);
 
                 openChatActivity();
             }
