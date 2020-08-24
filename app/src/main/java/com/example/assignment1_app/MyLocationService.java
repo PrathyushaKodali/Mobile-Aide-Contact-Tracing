@@ -7,13 +7,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class MyLocationService extends Service {
     private LocationManager LocationManager = null;
     private static final String TAG = "GPS Location";
@@ -29,19 +39,33 @@ public class MyLocationService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             LastKnownLocation.set(location);
-            Log.e(TAG, "location longitude " + location.getLongitude() + " location latitude" + location.getLatitude());
+            Log.e(TAG, "location longitude " + location.getLongitude() + " location latitude" + location.getLatitude() + "timestamp" + System.currentTimeMillis());
 //            databaseHelp.addLatLng(System.currentTimeMillis(),location.getLatitude(),location.getLongitude());
 //            databaseHelp.close();
             sendMessageToActivity(location);
         }
 
         private void sendMessageToActivity(Location location){
-            Intent intent = new Intent("GPSLocationUpdates");
-            Bundle b = new Bundle();
-            b.putParcelable("location",location);
-            intent.putExtra("Location",b);
-            Log.e(TAG,"Gonna send the data !");
-            sendBroadcast(intent);
+//            Intent intent = new Intent("GPSLocationUpdates");
+//            Bundle b = new Bundle();
+//            b.putParcelable("location",location);
+//            intent.putExtra("Location",b);
+//            Log.e(TAG,"Gonna send the data !");
+//            sendBroadcast(intent);
+            File newFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"coords.txt");
+            String filepath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"coords.txt";
+            try {
+                FileOutputStream fos = new FileOutputStream(filepath);
+                DataOutputStream dos = new DataOutputStream(fos);
+                double [] coords = {location.getLatitude(),location.getLongitude()};
+                dos.writeDouble(coords[0]);
+                dos.writeDouble(coords[1]);
+                dos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -78,7 +102,7 @@ public class MyLocationService extends Service {
         try {
             LocationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
-                    15*60*1000,
+                    1*60*1000,
                     0,
                     Listener
             );

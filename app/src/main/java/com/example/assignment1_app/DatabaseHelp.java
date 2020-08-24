@@ -3,12 +3,16 @@ package com.example.assignment1_app;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.File;
 
 
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class DatabaseHelp {
 
     public static final int DB_VERSION = 1;
